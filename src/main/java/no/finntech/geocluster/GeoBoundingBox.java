@@ -41,7 +41,7 @@ public class GeoBoundingBox {
     }
 
     public GeoBoundingBox extend(double distance, GeoDistanceUnit unit) {
-        double offsetBy = distance * unit.getFactor();
+        double offsetBy = unit.toKm(distance);
         return new GeoBoundingBox(topLeft().offsetBy(offsetBy, 315.0, unit), bottomRight().offsetBy(offsetBy, 135.0, unit));
     }
 

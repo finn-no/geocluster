@@ -104,7 +104,7 @@ public class GeoPoint {
      * @return
      */
     public GeoPoint offsetBy(double distance, double bearing, GeoDistanceUnit unit) {
-        double d = distance * unit.getFactor() / EARTH_RADIUS;
+        double d = unit.toKm(distance) / EARTH_RADIUS;
         double b = Math.toRadians(bearing);
 
         double lat = Math.asin(Math.sin(radLat) * Math.cos(d) +
@@ -133,7 +133,7 @@ public class GeoPoint {
         // Valid result is in range -1.0..+1.0
         rad = (rad < -1.0) ? -1.0 : (rad > 1.0) ? 1.0 : rad;
 
-        return Math.acos(rad) * radius * unit.getFactor();
+        return unit.fromKm(Math.acos(rad) * radius);
     }
 
     /* Same as above, but we assume that we're referring to coordinates on planet earth. */
@@ -161,8 +161,8 @@ public class GeoPoint {
      * array element.</li> </ul>
      */
     public GeoPoint[] boundingCoordinates(double distance, double radius, GeoDistanceUnit unit) {
-        distance *= unit.getFactor();
-        radius *= unit.getFactor();
+        distance = unit.toKm(distance);
+        radius = unit.toKm(distance);
 
         if (radius < 0d || distance < 0d)
             throw new IllegalArgumentException();

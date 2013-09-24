@@ -11,7 +11,11 @@ public enum GeoDistanceUnit {
         this.factor = factor;
     }
 
-    public double getFactor() {
-        return factor;
+    public double fromKm(double val) {
+        return val * factor;
+    }
+
+    public double toKm(double val) {
+        return val / factor;
     }
 }
