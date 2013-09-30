@@ -7,13 +7,15 @@ public class GeoClusterBuilder {
 
     private final double factor;
     private final List<GeoCluster> clusters = new LinkedList<GeoCluster>();
-    private GeoBoundingBox bounds;
+    private GeoBoundingBox bounds = null;
     private double maxDistance = 0.0;
 
     public GeoClusterBuilder(double factor, GeoBoundingBox bounds) {
         this.factor = factor;
         this.bounds = bounds;
-        maxDistance = factor * bounds.size(GeoDistanceUnit.KILOMETERS);
+        if (bounds != null) {
+            maxDistance = factor * bounds.size(GeoDistanceUnit.KILOMETERS);
+        }
     }
 
     public GeoClusterBuilder(double factor) {
