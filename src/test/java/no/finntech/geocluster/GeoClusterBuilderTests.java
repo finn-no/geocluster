@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import static no.finntech.geocluster.test.Places.DENVER;
 import static no.finntech.geocluster.test.Places.LAS_VEGAS;
+import static no.finntech.geocluster.test.Places.LOS_ANGELES;
 import static no.finntech.geocluster.test.Places.SAN_DIEGO;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -84,5 +85,16 @@ public class GeoClusterBuilderTests {
         builder.add(LAS_VEGAS);
         assertThat("Cluster after adding Las Vegas", builder.build(), hasItems(
                 new GeoCluster(4, GeoPoint.fromDegrees(37.1000, -110.5100), new GeoBoundingBox(DENVER).extend(SAN_DIEGO).extend(LAS_VEGAS))));
+    }
+
+    @Test
+    public void testClusterInitialBoundingBox() {
+        GeoClusterBuilder builder = new GeoClusterBuilder(1.0, new GeoBoundingBox(LOS_ANGELES).extend(270, GeoDistanceUnit.MILES));
+        assertThat(builder.build().size(), equalTo(0));
+
+        builder.add(SAN_DIEGO);
+        builder.add(LAS_VEGAS);
+
+        assertThat("One cluster after adding SD and LV", builder.build().size(), equalTo(1));
     }
 }

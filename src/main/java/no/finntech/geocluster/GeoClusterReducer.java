@@ -5,7 +5,6 @@ import java.util.List;
 
 public class GeoClusterReducer {
 
-    private final GeoDistanceUnit unit = GeoDistanceUnit.KILOMETERS;
     private final double factor;
 
     public GeoClusterReducer(double factor) {
@@ -14,7 +13,7 @@ public class GeoClusterReducer {
 
     public List<GeoCluster> reduce(List<GeoCluster> clusters) {
         GeoBoundingBox bounds = getBounds(clusters);
-        double maxDistance = bounds != null ? factor * bounds.size(unit) : 0.0;
+        double maxDistance = bounds != null ? factor * bounds.size(GeoDistanceUnit.KILOMETERS) : 0.0;
         List<GeoCluster> reduced = new LinkedList<GeoCluster>();
         reduced.addAll(clusters);
         REDUCE:
@@ -23,7 +22,7 @@ public class GeoClusterReducer {
                 for (int j = i + 1; j < reduced.size(); ++j) {
                     GeoCluster a = reduced.get(i);
                     GeoCluster b = reduced.get(j);
-                    if (GeoPoints.distance(a.center(), b.center(), unit) <= maxDistance) {
+                    if (GeoPoints.distance(a.center(), b.center(), GeoDistanceUnit.KILOMETERS) <= maxDistance) {
                         reduced.remove(a);
                         reduced.remove(b);
                         reduced.add(a.merge(b));
